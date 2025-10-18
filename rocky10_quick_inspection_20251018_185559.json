@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-10-18T18:55:59.096199",
+  "hostname": "cursor",
+  "system_info": {
+    "hostname": "cursor",
+    "uptime": "0天20小时",
+    "cpu_percent": 0.0,
+    "memory_percent": 4.4
+  },
+  "hardware": {
+    "cpu": {
+      "cpu_percent": 0.0
+    },
+    "memory": {
+      "percent": 4.4
+    },
+    "disk": []
+  },
+  "network": {
+    "open_ports": []
+  },
+  "services": {
+    "sshd": {
+      "status": "inactive",
+      "enabled": false
+    },
+    "firewalld": {
+      "status": "inactive",
+      "enabled": false
+    },
+    "chronyd": {
+      "status": "inactive",
+      "enabled": false
+    },
+    "NetworkManager": {
+      "status": "inactive",
+      "enabled": false
+    }
+  },
+  "security": {
+    "firewall": "unknown",
+    "selinux": "unknown"
+  },
+  "logs": {},
+  "performance": {},
+  "issues": [
+    "关键服务 sshd 未运行",
+    "关键服务 chronyd 未运行"
+  ]
+}

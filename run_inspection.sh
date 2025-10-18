@@ -29,14 +29,33 @@ echo ""
 
 read -p "请输入选择 (1-3): " choice
 
+echo ""
+echo "请选择输出格式:"
+echo "1. JSON格式 (默认)"
+echo "2. DOCX格式 (Word文档)"
+echo "3. PDF格式"
+echo "4. 多种格式 (JSON + DOCX + PDF)"
+echo ""
+
+read -p "请输入格式选择 (1-4): " format_choice
+
+# 设置输出格式
+case $format_choice in
+    1) output_format="json" ;;
+    2) output_format="docx" ;;
+    3) output_format="pdf" ;;
+    4) output_format="json docx pdf" ;;
+    *) output_format="json" ;;
+esac
+
 case $choice in
     1)
         echo "🔍 开始完整巡检..."
-        python3 rocky10_inspection.py
+        python3 rocky10_inspection.py -f $output_format
         ;;
     2)
         echo "🔍 开始快速巡检..."
-        python3 rocky10_quick_inspection.py
+        python3 rocky10_quick_inspection.py -f $output_format
         ;;
     3)
         echo "👋 退出巡检工具"

@@ -1,6 +1,6 @@
 # Rocky Linux 10 系统巡检脚本
 
-这是一个专为Rocky Linux 10设计的系统巡检Python脚本，可以全面检查系统状态、硬件资源、网络、安全等关键指标。
+这是一个专为Rocky Linux 10设计的系统巡检Python脚本，可以全面检查系统状态、硬件资源、网络、安全等关键指标，并支持生成多种格式的详细报告。
 
 ## 功能特性
 
@@ -49,6 +49,8 @@ pip install -r requirements.txt
 ```
 
 ### 2. 运行巡检脚本
+
+#### 基本用法
 ```bash
 # 普通用户运行（部分功能受限）
 python3 rocky10_inspection.py
@@ -57,14 +59,48 @@ python3 rocky10_inspection.py
 sudo python3 rocky10_inspection.py
 ```
 
+#### 输出格式选项
+```bash
+# 生成JSON格式报告（默认）
+python3 rocky10_inspection.py -f json
+
+# 生成DOCX格式报告（Word文档）
+python3 rocky10_inspection.py -f docx
+
+# 生成PDF格式报告
+python3 rocky10_inspection.py -f pdf
+
+# 生成多种格式报告
+python3 rocky10_inspection.py -f json docx pdf
+
+# 仅生成文件，不显示控制台输出
+python3 rocky10_inspection.py -f docx pdf --no-console
+
+# 自定义文件名前缀
+python3 rocky10_inspection.py -f docx --prefix my_inspection
+```
+
+#### 快速巡检
+```bash
+# 快速巡检（仅检查关键指标）
+python3 rocky10_quick_inspection.py -f docx pdf
+```
+
+#### 交互式运行
+```bash
+# 使用交互式脚本（推荐新手使用）
+./run_inspection.sh
+```
+
 ### 3. 查看报告
 脚本会：
-- 在终端显示详细的巡检报告
-- 自动保存JSON格式的详细报告到文件
-- 报告文件名格式：`rocky10_inspection_report_YYYYMMDD_HHMMSS.json`
+- 在终端显示详细的巡检报告（除非使用--no-console参数）
+- 自动保存指定格式的详细报告到文件
+- 报告文件名格式：`rocky10_inspection_report_YYYYMMDD_HHMMSS.[json|docx|pdf]`
 
-## 输出示例
+## 输出格式
 
+### 控制台输出示例
 ```
 🔍 Rocky Linux 10 系统巡检报告
 ============================================================
@@ -114,12 +150,31 @@ sudo python3 rocky10_inspection.py
 ✅ 未发现明显问题
 ```
 
+### 文件输出格式
+
+#### JSON格式
+- 机器可读的详细数据
+- 包含所有检查结果和原始数据
+- 适合程序处理和数据分析
+
+#### DOCX格式
+- 专业的Word文档格式
+- 包含表格和格式化文本
+- 适合打印和分享给管理层
+
+#### PDF格式
+- 跨平台兼容的文档格式
+- 包含图表和格式化内容
+- 适合归档和正式报告
+
 ## 注意事项
 
 1. **权限要求**：建议以root用户运行以获得完整的系统信息
-2. **依赖包**：需要安装`psutil`包来获取系统信息
+2. **依赖包**：需要安装基础依赖`psutil`，生成docx和PDF需要额外依赖
 3. **执行时间**：完整巡检大约需要30-60秒
-4. **报告保存**：每次运行都会生成带时间戳的JSON报告文件
+4. **报告保存**：每次运行都会生成带时间戳的报告文件
+5. **输出格式**：支持JSON、DOCX、PDF三种格式，可同时生成多种格式
+6. **文件大小**：PDF和DOCX文件通常比JSON文件大，但更易阅读
 
 ## 自定义配置
 
@@ -129,6 +184,31 @@ sudo python3 rocky10_inspection.py
 - `common_ports`：要检查的常用端口
 - `critical_services`：关键服务列表
 - 资源使用率告警阈值
+- 报告模板和样式（在`report_generator.py`中）
+
+## 命令行参数
+
+### 完整巡检脚本 (rocky10_inspection.py)
+```bash
+python3 rocky10_inspection.py [选项]
+
+选项:
+  -f FORMAT, --format FORMAT  输出格式 [json|docx|pdf] (默认: json)
+  --no-console               不显示控制台输出，仅生成文件
+  --prefix PREFIX           输出文件名前缀
+  -h, --help                显示帮助信息
+```
+
+### 快速巡检脚本 (rocky10_quick_inspection.py)
+```bash
+python3 rocky10_quick_inspection.py [选项]
+
+选项:
+  -f FORMAT, --format FORMAT  输出格式 [json|docx|pdf] (默认: json)
+  --no-console               不显示控制台输出，仅生成文件
+  --prefix PREFIX           输出文件名前缀
+  -h, --help                显示帮助信息
+```
 
 ## 故障排除
 

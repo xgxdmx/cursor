@@ -16,8 +16,10 @@ import platform
 import psutil
 import socket
 import re
+import argparse
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from report_generator import ReportGenerator
 
 class Rocky10Inspector:
     """Rocky Linux 10 系统巡检器"""
@@ -443,22 +445,54 @@ class Rocky10Inspector:
         
         return json.dumps(self.report, indent=2, ensure_ascii=False)
     
-    def save_report(self, filename: str = None):
+    def save_report(self, output_formats: List[str] = None, filename_prefix: str = None):
         """保存报告到文件"""
-        if filename is None:
+        if output_formats is None:
+            output_formats = ['json']
+        
+        if filename_prefix is None:
             timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"rocky10_inspection_report_{timestamp}.json"
+            filename_prefix = f"rocky10_inspection_report_{timestamp}"
         
-        report_json = json.dumps(self.report, indent=2, ensure_ascii=False)
+        saved_files = []
         
-        try:
-            with open(filename, 'w', encoding='utf-8') as f:
-                f.write(report_json)
-            print(f"\n📄 报告已保存到: {filename}")
-        except Exception as e:
-            print(f"\n❌ 保存报告失败: {e}")
+        # 保存JSON格式
+        if 'json' in output_formats:
+            json_filename = f"{filename_prefix}.json"
+            try:
+                report_json = json.dumps(self.report, indent=2, ensure_ascii=False)
+                with open(json_filename, 'w', encoding='utf-8') as f:
+                    f.write(report_json)
+                saved_files.append(json_filename)
+                print(f"📄 JSON报告已保存到: {json_filename}")
+            except Exception as e:
+                print(f"❌ 保存JSON报告失败: {e}")
+        
+        # 保存DOCX格式
+        if 'docx' in output_formats:
+            try:
+                generator = ReportGenerator(self.report)
+                docx_filename = generator.generate_docx_report(f"{filename_prefix}.docx")
+                saved_files.append(docx_filename)
+                print(f"📄 DOCX报告已保存到: {docx_filename}")
+            except Exception as e:
+                print(f"❌ 保存DOCX报告失败: {e}")
+                print("请确保已安装python-docx: pip install python-docx")
+        
+        # 保存PDF格式
+        if 'pdf' in output_formats:
+            try:
+                generator = ReportGenerator(self.report)
+                pdf_filename = generator.generate_pdf_report(f"{filename_prefix}.pdf")
+                saved_files.append(pdf_filename)
+                print(f"📄 PDF报告已保存到: {pdf_filename}")
+            except Exception as e:
+                print(f"❌ 保存PDF报告失败: {e}")
+                print("请确保已安装reportlab: pip install reportlab")
+        
+        return saved_files
     
-    def run_inspection(self):
+    def run_inspection(self, output_formats: List[str] = None, show_console: bool = True):
         """执行完整巡检"""
         print("🚀 开始Rocky Linux 10系统巡检...")
         print(f"巡检时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -474,12 +508,15 @@ class Rocky10Inspector:
             self.check_performance()
             
             # 生成并显示报告
-            self.generate_report()
+            if show_console:
+                self.generate_report()
             
             # 保存报告
-            self.save_report()
+            saved_files = self.save_report(output_formats)
             
             print("\n✅ 巡检完成!")
+            if saved_files:
+                print(f"📁 报告文件: {', '.join(saved_files)}")
             
         except KeyboardInterrupt:
             print("\n\n⏹️  巡检被用户中断")
@@ -490,6 +527,18 @@ class Rocky10Inspector:
 
 def main():
     """主函数"""
+    parser = argparse.ArgumentParser(description='Rocky Linux 10 系统巡检工具')
+    parser.add_argument('-f', '--format', nargs='+', 
+                       choices=['json', 'docx', 'pdf'], 
+                       default=['json'],
+                       help='输出格式 (默认: json)')
+    parser.add_argument('--no-console', action='store_true',
+                       help='不显示控制台输出，仅生成文件')
+    parser.add_argument('--prefix', type=str,
+                       help='输出文件名前缀')
+    
+    args = parser.parse_args()
+    
     # 检查是否为root用户
     if os.geteuid() != 0:
         print("⚠️  警告: 建议以root用户运行此脚本以获得完整信息")
@@ -497,16 +546,36 @@ def main():
         print()
     
     # 检查依赖
+    missing_deps = []
     try:
         import psutil
     except ImportError:
-        print("❌ 缺少依赖包: psutil")
-        print("请运行: pip install psutil")
+        missing_deps.append('psutil')
+    
+    # 检查可选依赖
+    if 'docx' in args.format:
+        try:
+            import docx
+        except ImportError:
+            missing_deps.append('python-docx')
+    
+    if 'pdf' in args.format:
+        try:
+            import reportlab
+        except ImportError:
+            missing_deps.append('reportlab')
+    
+    if missing_deps:
+        print(f"❌ 缺少依赖包: {', '.join(missing_deps)}")
+        print("请运行: pip install -r requirements.txt")
         sys.exit(1)
     
     # 创建巡检器并运行
     inspector = Rocky10Inspector()
-    inspector.run_inspection()
+    inspector.run_inspection(
+        output_formats=args.format,
+        show_console=not args.no_console
+    )
 
 if __name__ == "__main__":
     main()
