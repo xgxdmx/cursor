@@ -1,0 +1,190 @@
+{
+  "timestamp": "2025-10-18T18:49:11.517552",
+  "hostname": "cursor",
+  "system_info": {
+    "os": "Linux",
+    "os_version": "6.1.147",
+    "architecture": "x86_64",
+    "hostname": "cursor",
+    "uptime": "0天 20小时 34分钟",
+    "kernel": "6.1.147",
+    "python_version": "3.13.3",
+    "os_release": {
+      "PRETTY_NAME": "Ubuntu 25.04",
+      "NAME": "Ubuntu",
+      "VERSION_ID": "25.04",
+      "VERSION": "25.04 (Plucky Puffin)",
+      "VERSION_CODENAME": "plucky",
+      "ID": "ubuntu",
+      "ID_LIKE": "debian",
+      "HOME_URL": "https://www.ubuntu.com/",
+      "SUPPORT_URL": "https://help.ubuntu.com/",
+      "BUG_REPORT_URL": "https://bugs.launchpad.net/ubuntu/",
+      "PRIVACY_POLICY_URL": "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy",
+      "UBUNTU_CODENAME": "plucky",
+      "LOGO": "ubuntu-logo"
+    }
+  },
+  "hardware": {
+    "cpu": {
+      "cpu_count": 4,
+      "cpu_percent": 0.0,
+      "cpu_freq": {
+        "current": 2400.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "load_avg": [
+        0.19873046875,
+        0.72265625,
+        0.8974609375
+      ]
+    },
+    "memory": {
+      "total": 16795742208,
+      "available": 16102805504,
+      "used": 692936704,
+      "free": 10273976320,
+      "percent": 4.1,
+      "swap_total": 0,
+      "swap_used": 0,
+      "swap_free": 0,
+      "swap_percent": 0.0
+    },
+    "disk": [
+      {
+        "device": "/dev/root",
+        "mountpoint": "/etc/resolv.conf",
+        "fstype": "ext4",
+        "total": 135152996352,
+        "used": 6305992704,
+        "free": 121958318080,
+        "percent": 4.665817905787542
+      },
+      {
+        "device": "/dev/root",
+        "mountpoint": "/etc/hostname",
+        "fstype": "ext4",
+        "total": 135152996352,
+        "used": 6305992704,
+        "free": 121958318080,
+        "percent": 4.665817905787542
+      },
+      {
+        "device": "/dev/root",
+        "mountpoint": "/etc/hosts",
+        "fstype": "ext4",
+        "total": 135152996352,
+        "used": 6305992704,
+        "free": 121958318080,
+        "percent": 4.665817905787542
+      }
+    ]
+  },
+  "network": {
+    "interfaces": {
+      "lo": [
+        {
+          "type": "IPv4",
+          "address": "127.0.0.1",
+          "netmask": "255.0.0.0",
+          "broadcast": null
+        },
+        {
+          "type": "IPv6",
+          "address": "::1"
+        }
+      ],
+      "eth0": [
+        {
+          "type": "IPv4",
+          "address": "172.30.0.2",
+          "netmask": "255.255.255.0",
+          "broadcast": "172.30.0.255"
+        },
+        {
+          "type": "IPv6",
+          "address": "fe80::802b:38ff:fe3d:bcd0%eth0"
+        }
+      ],
+      "docker0": [
+        {
+          "type": "IPv4",
+          "address": "172.17.0.1",
+          "netmask": "255.255.0.0",
+          "broadcast": "172.17.255.255"
+        }
+      ]
+    },
+    "connections": {
+      "total": 10,
+      "established": 5,
+      "listening": 3,
+      "time_wait": 2
+    },
+    "open_ports": []
+  },
+  "security": {
+    "firewall": {
+      "status": "unknown",
+      "running": false
+    },
+    "selinux": {
+      "status": "unknown"
+    },
+    "ssh": {
+      "error": "[Errno 2] No such file or directory: '/etc/ssh/sshd_config'"
+    },
+    "users": {
+      "root_exists": true,
+      "sudo_groups": []
+    }
+  },
+  "services": {
+    "sshd": {
+      "status": "unknown",
+      "enabled": false
+    },
+    "firewalld": {
+      "status": "unknown",
+      "enabled": false
+    },
+    "chronyd": {
+      "status": "unknown",
+      "enabled": false
+    },
+    "NetworkManager": {
+      "status": "unknown",
+      "enabled": false
+    },
+    "rsyslog": {
+      "status": "unknown",
+      "enabled": false
+    },
+    "systemd-resolved": {
+      "status": "unknown",
+      "enabled": true
+    },
+    "crond": {
+      "status": "unknown",
+      "enabled": false
+    }
+  },
+  "logs": {
+    "error_count_1h": 1,
+    "kernel_errors": 0,
+    "disk_io_errors": 0
+  },
+  "performance": {
+    "top_processes": [],
+    "load_average": [
+      0.19873046875,
+      0.72265625,
+      0.8974609375
+    ]
+  },
+  "issues": [
+    "关键服务 sshd 未运行",
+    "关键服务 chronyd 未运行"
+  ]
+}
